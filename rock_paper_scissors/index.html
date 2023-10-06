@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>SD 230: Rock, Paper, Scissors</title>
+        <meta charset="UTF-8">
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: monospace;
+                text-align: center;
+            }
+            header {
+                text-align: center;
+                width: 97.5%;
+                border: 2px black solid;
+                margin: 1vh auto;
+            }
+            main {
+                width: 97.5%;
+                height: 90vh;
+                border: 2px black solid;
+                margin: 0px auto;
+            }
+            section {
+                display: inline-block;
+                margin: 1vh auto;
+                width: 49%;
+                height: 80%;
+                border: 2px black solid;
+            }
+
+            h2 {
+                margin: 1vh;
+            }
+
+            img {
+                margin: 0px auto;
+                width: 80%;
+                height: 80%;
+                border: 2px black solid;
+            }
+
+            fieldset {
+                width: 80%;
+                padding: .5vh;
+                margin: 1vh auto;
+            }
+            button {
+                margin: 1vh;
+                padding: 2px;
+                font-weight: bold;
+                font-size: 16px;
+                background-color: white;
+            }
+
+            button:hover {
+                box-shadow: black 2px 2px;
+            }
+
+            button:active {
+                font-size: 24px;
+                margin-bottom: 17px;
+            }
+
+            #choice {
+                padding: 2px;
+            }
+
+            #result {
+                font-weight: bold;
+                font-size: 24px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <header><h1>SD 230: Rock, Paper, Scissors</h1></header>
+        <main>
+            <section id="player_display">
+                <h2>Player's Choice:</h2>
+                <img src="placeholder.png" id="player_image">
+            </section>
+            <section id="computer_display">
+                <h2>Computer's Choice:</h2>
+                <img src="placeholder.png" id="computer_image">
+            </section>
+            <p id="result">To Play This Game, Please Choose:</p>
+            <input type="text" placeholder="Type your choice:" id="choice">
+            <button onclick="outcome()">Shoot!</button>
+        </main>
+        <script>
+            const options = ["ROCK", "PAPER", "SCISSORS"];
+
+            function outcome() {
+                let computer_choice = options[random_number(3)]; //randomly generated result for computer
+                let player_choice = document.getElementById("choice").value; //player input value
+                let player_choice_fixed = player_choice.toUpperCase(); // eliminates issues with capitolization
+                let result;
+
+                if(player_choice_fixed != "ROCK" && player_choice_fixed != "SCISSORS" && player_choice_fixed != "PAPER") {
+                    alert("\"" + player_choice + "\" is not a valid option. Please Choose Rock, Paper, or Scissors.");
+                }
+
+                else {
+                    // HANDLING IMAGES
+                    switch(player_choice_fixed) {
+                        case "ROCK":
+                        document.getElementById("player_image").src = "therock.png";
+                        break;
+                        case "PAPER":
+                        document.getElementById("player_image").src = "paper.jpg";
+                        break;
+                        case "SCISSORS":
+                        document.getElementById("player_image").src = "scissors.jpg";
+                        break; 
+                    }
+
+                    switch(computer_choice) {
+                        case "ROCK":
+                        document.getElementById("computer_image").src = "therock.png";
+                        break;
+                        case "PAPER":
+                        document.getElementById("computer_image").src = "paper.jpg";
+                        break;
+                        case "SCISSORS":
+                        document.getElementById("computer_image").src = "scissors.jpg";
+                        break; 
+                    }   
+                
+
+                    // HANDLING RESULTS TEXT
+                    if(player_choice_fixed == computer_choice) {
+                        result = "You and the computer both chose " + player_choice_fixed + ". The game ends in a draw.";
+                        document.getElementById("result").style.color = "black";
+                    }
+
+                    else if(player_choice_fixed == "PAPER" && computer_choice == "ROCK" || player_choice_fixed == "ROCK" && computer_choice == "  SCISSORS" || player_choice_fixed == "SCISSORS" && computer_choice == "PAPER") {
+                        result = player_choice_fixed + " beats " + computer_choice + ". You win!";
+                        document.getElementById("result").style.color = "green";
+                    }
+
+                    else {
+                        result = computer_choice + " beats " + player_choice_fixed + ". You lose...";
+                        document.getElementById("result").style.color = "red";
+                    }
+
+                    document.getElementById("choice").value = ""; //clears text input
+                    document.getElementById("result").innerHTML = result;
+                
+            }
+        }
+
+            // Random Number Generator
+            function random_number(number) {
+                return Math.floor(Math.random() * number);
+            }
+        </script>
+    </body>
+</html>
