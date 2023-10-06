@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>SD 230: Currency Converter</title>
+        <meta charset="utf-8">
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+                box-sizing: border-box;
+            }
+            body {
+                text-align: center;
+                font-family: monospace;
+                font-weight: bold;
+            }
+            header {
+                border: 2px black solid;
+                margin: 10px;
+                padding: 5px;
+            }
+            main {
+                border: 2px black solid;
+                margin: 10px;
+                padding: 20px;
+            }
+            h2{
+                margin-bottom: 20px;
+            }
+            select {
+                padding: 2px;
+            }
+            button {
+                margin-top: 20px;
+                padding: 2px;
+            }
+            #conversion {
+                color: transparent;
+                margin: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>SD 230: Currency Converter</h1>
+        </header>
+        <main>
+            <h2>Currency Conversion Tool:</h2>
+            <label for="amount">Amount To Convert:</label>
+            <input type="text" id="amount">
+            <label for="from">Starting Currency:</label>
+            <select name="from" id="from">
+                <option value="AUD">AUD</option>
+                <option value="CAD">CAD</option>
+                <option value="CLP">CLP</option>
+                <option value="CNY">CNY</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="INR">INR</option>
+                <option value="JPY">JPY</option>
+                <option value="RUB">RUB</option>
+                <option value="USD">USD</option>
+                <option value="ZAR">ZAR</option>
+            </select>
+            <label for="to">Convert To:</label>
+            <select name="to" id="to">
+                <option value="AUD">AUD</option>
+                <option value="CAD">CAD</option>
+                <option value="CLP">CLP</option>
+                <option value="CNY">CNY</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="INR">INR</option>
+                <option value="JPY">JPY</option>
+                <option value="RUB">RUB</option>
+                <option value="USD">USD</option>
+                <option value="ZAR">ZAR</option>
+            </select>
+            <br>
+            <button onclick="convert(document.getElementById('amount').value, document.getElementById('from').value, document.getElementById('to').value)">Convert</button>
+            <p id="conversion">placeholder</p>
+            <h2>Currency Look-Up Tool:</h2>
+            <p>If you aren't sure which currency code you're looking for, try searching a specific word in the name (ex. dollar) or inputting a currency code (ex. CAD) to find it.</p>
+            <input type="text" id="search">
+            <button onclick="search(document.getElementById('search').value)">Search</button>
+            <div id="results"></div>
+        </main>
+        <script>
+
+            function search(term){
+
+                document.getElementById("results").innerHTML = "";
+
+                let termFound = false;
+            
+                let currencies = 
+                [
+                ["AUD","Australian","Dollar","AUD - Australian Dollar"],
+                ["CAD","Canadian","Dollar", "CAD - Canadain Dollar"],
+                ["CLP","Chilean","Peso","CLP - Chilean Peso"],
+                ["CNY","Chinese","Yuan","CNY - Chinese Yuan"],
+                ["EUR","Euro","EUR - Euro"],
+                ["GBP","British","Pound","Sterling","Pound Sterling", "GBP - British Pound Sterling"],
+                ["INR","Indian","Rupee","INR - Indian Rupee"],
+                ["JPY","Japanese","Yen","JPY - Japanese Yen"],
+                ["RUB","Russian","Ruble","RUB - Russian Ruble"],
+                ["USD","United","States","United States","Dollar", "USD - United States Dollar"],
+                ["ZAR","South","African","South African", "Rand","ZAR - South African Rand"]
+                ]
+
+                for(let i = 0; i < currencies.length; i++) {
+                    let newArray = currencies[i];
+                    
+                    for(let j = 0; j < newArray.length; j++) {
+                        if(term.toLowerCase() == newArray[j].toLowerCase()) {
+                            termFound = true;
+                            document.getElementById("results").innerHTML += "<p>" + newArray[newArray.length - 1] + "<p>";
+                        }
+                    }
+                }
+
+                if(termFound == false) {
+                    document.getElementById("results").innerHTML += "<p>I'm sorry, \"" + term + "\" did not match any known currencies. Please try again.</p>";
+                }
+            }
+
+            function convert(amount, starting_cc, ending_cc) {
+
+                let newAmount = 0.00; // variable to convert to USD and then convert to new currency
+
+                amount = amount * 1.00; // adds decimal place for whole #s
+                
+                // switch-case to convert to USD
+                switch(starting_cc) {
+                    case "AUD":
+                        newAmount = amount / 1.531863;
+                        break;
+                    case "CAD":
+                        newAmount = amount / 1.36029;
+                        break;
+                    case "CLP":
+                        newAmount = amount / 950.662057;
+                        break;
+                    case "CNY":
+                        newAmount = amount / 7.128404;
+                        break;
+                    case "EUR":
+                        newAmount = amount / 1.03203;
+                        break;
+                    case "GBP":
+                        newAmount = amount / 0.920938;
+                        break;
+                    case "INR":
+                        newAmount = amount / 81.255504;
+                        break;
+                    case "JPY":
+                        newAmount = amount / 143.376504;
+                        break;
+                    case "RUB":
+                        newAmount = amount / 57.875038;
+                        break;
+                    case "ZAR":
+                        newAmount = amount / 17.92624;
+                        break;
+                    default:
+                        newAmount = amount;
+                        break;
+                }
+
+                // switch-case to convert to new currency
+                switch(ending_cc) {
+                    case "AUD":
+                        newAmount = newAmount * 1.531863;
+                        break;
+                    case "CAD":
+                        newAmount = newAmount * 1.36029;
+                        break;
+                    case "CLP":
+                        newAmount = newAmount * 950.662057;
+                        break;
+                    case "CNY":
+                        newAmount = newAmount * 7.128404;
+                        break;
+                    case "EUR":
+                        newAmount = newAmount * 1.03203;
+                        break;
+                    case "GBP":
+                        newAmount = newAmount * 0.920938;
+                        break;
+                    case "INR":
+                        newAmount = newAmount * 81.255504;
+                        break;
+                    case "JPY":
+                        newAmount = newAmount * 143.376504;
+                        break;
+                    case "RUB":
+                        newAmount = newAmount * 57.875038;
+                        break;
+                    case "ZAR":
+                        newAmount = newAmount * 17.92624;
+                        break;
+                    default:
+                        break;
+                }
+                // toFixed(2) rounds to 2 decimal places
+                document.getElementById("conversion").innerHTML = amount.toFixed(2) + " " + starting_cc + " = " + newAmount.toFixed(2) + " " + ending_cc;
+                document.getElementById("conversion").style.color = "black";
+            }
+        </script>
+    </body>
+</html>
