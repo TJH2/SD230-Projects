@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>SD 230: Calculator</title>
+        <meta charset="utf-8">
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: monospace;
+                text-align: center;
+            }
+            h1 {
+                margin: 10px auto;
+                width: 35vw;
+                border: 2px black solid;
+            }
+            main {
+                background-color: seagreen;
+                margin: 10px auto;
+                padding: 20px;
+                width: 35vw;
+                height: 555px;
+                border: 2px black solid;
+            }
+            h2 {
+                height: 35px;
+                border: 2px black solid;
+                text-align: right;
+                margin-bottom: 20px;
+                padding: 5px;
+                padding-right: 20px;
+                background-color: white;
+                overflow: hidden;
+            }
+            button {
+                padding: 2px;
+                width: 50px;
+                font-weight: bolder;
+                border: 2px black solid;
+            }
+            #numbers {
+                float: left;
+                display: grid;
+                grid-template-columns: auto auto auto;
+                gap: 20px;
+                justify-content: center;
+                align-content: stretch;
+                width: 75%;
+                height: 450px;
+                padding: 20px;
+                background-color: orange;
+                border: 2px black solid;
+                opacity: .9;
+            }
+            #operators {
+                float: right;
+                display: grid;
+                justify-content: center;
+                align-content:space-between;
+                gap: 20px;
+                width: 20%;
+                height: 450px;
+                padding: 20px;
+                background-color: pink;
+                border: 2px black solid;
+                opacity: .9;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>SD 230: CALCULATOR</h1>
+        </header>
+        <main>
+            <h2 id="visual"></h2>
+            <div id="numbers">
+                <button onclick="hold(1)">1</button>
+                <button onclick="hold(2)">2</button>
+                <button onclick="hold(3)">3</button>
+                <button onclick="hold(4)">4</button>
+                <button onclick="hold(5)">5</button>
+                <button onclick="hold(6)">6</button>
+                <button onclick="hold(7)">7</button>
+                <button onclick="hold(8)">8</button>
+                <button onclick="hold(9)">9</button>
+                <button onclick="hold(0)">0</button>
+            </div>
+
+            <div id="operators">
+                <button onclick="hold('+')">+</button>
+                <button onclick="hold('-')">-</button>
+                <button onclick="hold('/')">/</button>
+                <button onclick="hold('*')">*</button>
+                <button onclick="hold('\(')">&#40;</button>
+                <button onclick="hold('\)')">&#41;</button>
+                <button onclick ="compute()">=</button>
+                <button onclick="back()">DEL</button>
+                <button onclick="wipe()">CLEAR</button>
+            </div>
+
+        </main>
+        <script>
+            let calc = [];
+            let answer = 0;
+
+            function hold(input) {
+                let visuals = "";
+
+                if(calc.length == 1 && answer != 0 && input != "+" && input != "-" && input != "/" && input != "*") {
+                    answer = 0;
+                    calc = [];
+                }
+
+                calc.push(input);
+                for(let i = 0; i < calc.length; i++) {
+                    visuals += calc[i];
+                }
+                document.getElementById("visual").innerHTML = visuals;
+            }
+
+            function compute() {
+                
+                answer = eval(calc.join('')); // a method to evaulate the array and add up the value
+                calc = [answer];
+                document.getElementById("visual").innerHTML = calc[0];
+            }
+
+            function back() {
+                let visuals = "";
+                if(calc) {
+                    calc.pop();
+                
+                    for(let i = 0; i < calc.length; i++) {
+                        visuals += calc[i];
+                    }
+                    document.getElementById("visual").innerHTML = visuals;
+                }
+
+            }
+
+            function wipe() { // function to clear the calculator
+                answer = 0;
+                calc = [];
+                document.getElementById("visual").innerHTML = "";
+            }
+        </script>
+    </body>
+</html>
