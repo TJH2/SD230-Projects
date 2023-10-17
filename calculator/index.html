@@ -23,7 +23,7 @@
                 margin: 10px auto;
                 padding: 20px;
                 width: 35vw;
-                height: 555px;
+                height: 600px;
                 border: 2px black solid;
             }
             h2 {
@@ -50,7 +50,7 @@
                 justify-content: center;
                 align-content: stretch;
                 width: 75%;
-                height: 450px;
+                height: 500px;
                 padding: 20px;
                 background-color: orange;
                 border: 2px black solid;
@@ -63,7 +63,7 @@
                 align-content:space-between;
                 gap: 20px;
                 width: 20%;
-                height: 450px;
+                height: 500px;
                 padding: 20px;
                 background-color: pink;
                 border: 2px black solid;
@@ -101,6 +101,7 @@
                 <button onclick="hold('**')">^</button>
                 <button onclick="hold('\(')">&#40;</button>
                 <button onclick="hold('\)')">&#41;</button>
+                <button onclick="hold('.')">.</button>
                 <button onclick ="compute()">=</button>
                 <button onclick="back()">DEL</button>
                 <button onclick="wipe()">CLEAR</button>
@@ -120,6 +121,7 @@
                       "^ -> Exponents\n" +
                       "( -> Left Parentheses\n" +
                       ") -> Right Parentheses\n" +
+                      ". -> Decimal\n" +
                       "= -> Computes Problem\n" +
                       "DEL -> Removes Last Input\n" +
                       "CLEAR -> Clears Calculator");
@@ -132,9 +134,19 @@
                 if(isNaN(calc[calc.length -1]) == false && input == "(") {
                     hold("*");
                 }
+                // to ensure that each number only has one decimal
+                // if the last NaN value is a . then don't add it, else add it in
+                else if(input == ".") {
+                    for(let i = calc.length -1; i >= 0; i--) {
+                        if(isNaN(calc[i])) {
+                            if(calc[i] == ".") { return; }
+                            else { break; }
+                        }
+                    }
+                }
 
                 // will keep computed value unless user tries to input a # after the value
-                if(calc.length == 1 && answer != 0 && isNaN(input) == false) {
+                if(calc.length == 1 && answer != 0 && (isNaN(input) == false || input == ".")) {
                     answer = 0;
                     calc = [];
                 }
@@ -157,6 +169,9 @@
                 // to avoid unclosed parentheses error
                 try {
                     answer = eval(calc.join('')); // a method to evaulate the array and add up the value
+                    if(!Number.isInteger(answer)) { // to keep answer at 2 decimal places if needed
+                    answer = answer.toFixed(2);
+                    }
                     calc = [answer];
                     document.getElementById("visual").innerHTML = calc[0];
                 } catch(e) {
