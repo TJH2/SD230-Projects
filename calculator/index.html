@@ -38,7 +38,7 @@
             }
             button {
                 padding: 2px;
-                width: 50px;
+                width: 60px;
                 font-weight: bolder;
                 border: 2px black solid;
             }
@@ -74,6 +74,9 @@
     <body>
         <header>
             <h1>SD 230: CALCULATOR</h1>
+            <p>I chose not to use a prompt() for this assingment so that I can make the program work more like a handheld calculator.</p>
+            <p>Please input your math problem into the calculator.</p> 
+            <p>Click <a href="#" onclick="help()"><strong>HELP</strong></a> for information on each button.</p>
         </header>
         <main>
             <h2 id="visual"></h2>
@@ -95,6 +98,7 @@
                 <button onclick="hold('-')">-</button>
                 <button onclick="hold('/')">/</button>
                 <button onclick="hold('*')">*</button>
+                <button onclick="hold('**')">^</button>
                 <button onclick="hold('\(')">&#40;</button>
                 <button onclick="hold('\)')">&#41;</button>
                 <button onclick ="compute()">=</button>
@@ -107,28 +111,60 @@
             let calc = [];
             let answer = 0;
 
+            // function for brief explenation of operators
+            function help() {
+                alert("0-9 -> Numeric Values\n" +
+                      "- -> Subtraction\n" + 
+                      "/ -> Division\n" +
+                      "* -> Multiplication\n" +
+                      "^ -> Exponents\n" +
+                      "( -> Left Parentheses\n" +
+                      ") -> Right Parentheses\n" +
+                      "= -> Computes Problem\n" +
+                      "DEL -> Removes Last Input\n" +
+                      "CLEAR -> Clears Calculator");
+            }
+
             function hold(input) {
                 let visuals = "";
 
-                if(calc.length == 1 && answer != 0 && input != "+" && input != "-" && input != "/" && input != "*") {
+                // because eval() can't handle n(n), instert a * before ()
+                if(isNaN(calc[calc.length -1]) == false && input == "(") {
+                    hold("*");
+                }
+
+                // will keep computed value unless user tries to input a # after the value
+                if(calc.length == 1 && answer != 0 && isNaN(input) == false) {
                     answer = 0;
                     calc = [];
                 }
 
                 calc.push(input);
                 for(let i = 0; i < calc.length; i++) {
+                    // to keep consistant visuals
+                    if(calc[i] != "**") {
                     visuals += calc[i];
+                    }
+                    else {
+                        visuals += "^";
+                    }
                 }
                 document.getElementById("visual").innerHTML = visuals;
             }
 
+            // function to compute problem
             function compute() {
-                
-                answer = eval(calc.join('')); // a method to evaulate the array and add up the value
-                calc = [answer];
-                document.getElementById("visual").innerHTML = calc[0];
+                // to avoid unclosed parentheses error
+                try {
+                    answer = eval(calc.join('')); // a method to evaulate the array and add up the value
+                    calc = [answer];
+                    document.getElementById("visual").innerHTML = calc[0];
+                } catch(e) {
+                    alert("Please make sure the parentheses are closed.");
+                  }
             }
 
+            // function to handle the delete feature
             function back() {
                 let visuals = "";
                 if(calc) {
@@ -142,7 +178,8 @@
 
             }
 
-            function wipe() { // function to clear the calculator
+            // function to clear the calculator
+            function wipe() {
                 answer = 0;
                 calc = [];
                 document.getElementById("visual").innerHTML = "";
