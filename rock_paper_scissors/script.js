@@ -1,5 +1,6 @@
 const options = ["ROCK", "PAPER", "SCISSORS"];
 let buttonAlt = true;
+// starting scores and timer value
 let pScore = 0;
 let cScore = 0;
 let timer = 10;
@@ -7,21 +8,22 @@ let timer = 10;
 document.getElementById("pScore").innerText = pScore;
 document.getElementById("cScore").innerText = cScore;
 
-
+// function to change the function that clicking the button performs, whether it starts a round or determines the outcome
 function checker() {
     if(buttonAlt) {
-        startGame();
+        startRound();
     }
     else {
         outcome(document.querySelector("input[name=\"choice\"]:checked"), false);
     }
 }
-
+// function to determine the outcome of the game, takes in boolean tooLong which is determined by whether timer has run out
 function outcome(playerChoice, tooLong) {
 
     let computerChoice = options[random_number(3)]; //randomly generated result for computer
-    let result;
-                
+    let result; // result message
+    
+    // conditional to handle if player pushes button before making a selection, timer runs out, or normal game
     if(playerChoice == null && tooLong == false) {
         return;
     }
@@ -32,9 +34,9 @@ function outcome(playerChoice, tooLong) {
         playerChoice = document.querySelector('input[name="choice"]:checked').value;
     }
 
-    buttonAlt = true;
+    buttonAlt = true; // changes checker function
 
-    document.getElementById("play").style.display="none";
+    document.getElementById("play").style.display="none"; // hides button so player can't click it again until round is over
 
     // HANDLING RESULTS
 
@@ -45,7 +47,7 @@ function outcome(playerChoice, tooLong) {
     }
                 
     else {
-        // player won
+        // player won, add 1 point for player
         if(playerChoice === "PAPER" && computerChoice === "ROCK") {
             result = playerChoice + " covers " + computerChoice + ". <span style='color:green'>You win!</span>";
             pScore++;
@@ -58,7 +60,7 @@ function outcome(playerChoice, tooLong) {
             result = playerChoice + " cuts " + computerChoice + ". <span style='color:green'>You win!</span>";
             pScore++;
         }
-        // player lost 
+        // player lost, add 1 point for computer
         else if(playerChoice === "PAPER" && computerChoice === "SCISSORS") {
             result = computerChoice + " cuts " + playerChoice + ". <span style ='color:red'>You lose...</span>";
             cScore++;
@@ -78,46 +80,45 @@ function outcome(playerChoice, tooLong) {
     
     return;
 }
+// function to use intervals to display different images as well as RPS one word as a time
+function displayDelay(result, tooLong, pChoice, cChoice) {
+    let arr = ["ROCK...","PAPER...","SCISSORS...","SHOOT!"];
+    let imgArr = ["therock.png","paper.jpg","scissors.jpg","placeholder.png"];
+    count = 0;
+    document.getElementById("result").innerHTML = "";
 
-function startGame() {
-    let count = 11;
-    buttonAlt = false;
-    document.getElementById("result").innerText = "Choose wisely...";
-    document.getElementById("play").innerText = "PLAY HAND!";
-    let labels = document.getElementsByTagName('label');
-    for( let i = 0; i < labels.length; i++ ) {
-        labels[i].style.display = "inline-block";         
-    }
-
-    let loop = setInterval( function() {
-        count--;
-        document.getElementById("timer").innerText = count;
-        if(count == 5) {
-            document.getElementById("timer").style.color = "red";
-        } else if( count == -1) {
+    let loop = setInterval( function() { // handles images/words
+        document.getElementById("player_image").src = imgArr[count];
+        document.getElementById("computer_image").src = imgArr[count];
+        if(count < 4) { 
+            document.getElementById("result").innerHTML += arr[count];
+            count++;
+        } else { // ends intervals, determines final images and resets starting values.
             clearInterval(loop);
-            document.getElementById("timer").style.color = "black";
-            document.getElementById("timer").innerText = "";
-            outcome(document.querySelector("input[name=\"choice\"]:checked"), true); 
+            picSwitch(pChoice,"player_image");         
+            picSwitch(cChoice,"computer_image"); 
+            document.getElementById("pScore").innerText = pScore;
+            document.getElementById("cScore").innerText = cScore;
+            document.getElementById("play").innerText = "PLAY AGAIN!";
+            document.getElementById("play").style.display="inline-block";
+            let labels = document.getElementsByTagName('label');
+            for( let i = 0; i < labels.length; i++ ) { // makes labels unclickable until round starts
+                labels[i].style.display = "none";         
+            }
+            if(document.querySelector('input[name="choice"]:checked') != null) { // unchecks previous choice
+                document.querySelector('input[name="choice"]:checked').checked = false;
+            }
+            if(tooLong) { // if timer ran out adds an additional message
+                document.getElementById("result").innerHTML = "You took too long so the computer chose for you. " + result;
+            }
+            else { document.getElementById("result").innerHTML = result; }
         }
-    }, 1000);
-
-    document.getElementById("play").addEventListener("click", () => {
-        if(document.querySelector("input[name=\"choice\"]:checked")) {
-        clearInterval(loop);
-        document.getElementById("timer").style.color = "black";
-        document.getElementById("timer").innerText = "";
-        }
-    });
+                }, 800);
     return;
-}
-        
-
-// Random Number Generator
-function random_number(number) {
-    return Math.floor(Math.random() * number);
+                
 }
 
+// function to handle final image connected to outcome for player/comp
 function picSwitch(input, id) {
     switch(input) {
         case "ROCK":
@@ -132,44 +133,47 @@ function picSwitch(input, id) {
     }  
     return;
 }
-
-function displayDelay(result, tooLong, pChoice, cChoice) {
-    let arr = ["ROCK...","PAPER...","SCISSORS...","SHOOT!"];
-    let imgArr = ["therock.png","paper.jpg","scissors.jpg","placeholder.png"];
-    count = 0;
-    document.getElementById("result").innerHTML = "";
+// a function to set up everything for the game as well as start 10s timer
+function startRound() {
+    let count = 10;
+    buttonAlt = false;
+    document.getElementById("result").innerText = "";
+    document.getElementById("play").innerText = "PLAY HAND!";
+    let labels = document.getElementsByTagName('label');
+    for( let i = 0; i < labels.length; i++ ) {
+        labels[i].style.display = "inline-block";         
+    }
 
     let loop = setInterval( function() {
-        document.getElementById("player_image").src = imgArr[count];
-        document.getElementById("computer_image").src = imgArr[count];
-        if(count < 4) { 
-            document.getElementById("result").innerHTML += arr[count];
-            count++;
-        } else { 
+        count--;
+        document.getElementById("timer").innerText = count;
+        if(count == 5) {
+            document.getElementById("timer").style.color = "red";
+        } else if( count == -1) {
             clearInterval(loop);
-            picSwitch(pChoice,"player_image");         
-            picSwitch(cChoice,"computer_image"); 
-            document.getElementById("pScore").innerText = pScore;
-            document.getElementById("cScore").innerText = cScore;
-            document.getElementById("play").innerText = "PLAY AGAIN!";
-            document.getElementById("play").style.display="block";
-            let labels = document.getElementsByTagName('label');
-            for( let i = 0; i < labels.length; i++ ) {
-                labels[i].style.display = "none";         
-            }
-            if(document.querySelector('input[name="choice"]:checked') != null) {
-                document.querySelector('input[name="choice"]:checked').checked = false;
-            }
-            if(tooLong) {
-                document.getElementById("result").innerHTML = "You took too long so the computer chose for you. " + result;
-            }
-            else { document.getElementById("result").innerHTML = result; }
+            document.getElementById("timer").style.color = "black";
+            document.getElementById("timer").innerText = "10";
+            outcome(document.querySelector("input[name=\"choice\"]:checked"), true); 
         }
-                }, 600);
+    }, 1000);
+
+    document.getElementById("play").addEventListener("click", () => { // event listener to stop time once button has been clicked
+        if(document.querySelector("input[name=\"choice\"]:checked")) {
+        clearInterval(loop);
+        document.getElementById("timer").style.color = "black";
+        document.getElementById("timer").innerText = "10";
+        }
+    });
     return;
-                
+}
+        
+
+// Random Number Generator
+function random_number(number) {
+    return Math.floor(Math.random() * number);
 }
 
+// ensures no labels are checked if user refreshes their page
 if(document.querySelector('input[name="choice"]:checked') != null) {
     document.querySelector('input[name="choice"]:checked').checked = false;
 }

@@ -9,24 +9,29 @@
     <body>
         <header><h1>ROCK, PAPER, SCISSORS</h1></header>
         <main>
-            <p>Score: You - <span id="pScore"></span> The Computer - <span id="cScore"></span></p>
-            <p>Timer: <span id="timer"><span></p>
-            <input type="radio" id="rock" value="ROCK" name="choice" check="false">
-            <label for="rock">ROCK</label>
-            <input type="radio" id="paper" value="PAPER" name="choice" check="false">
-            <label for="paper">PAPER</label>
-            <input type="radio" id="scissors" value="SCISSORS" name="choice" check="false">
-            <label for="scissors">SCISSORS</label>
-            <span id ="timer"></span>
-            <p id="result">INSTRUCTIONS: When you start the game, you will have 10 seconds to make a choice by clicking one of the three options above. Once you make your choice, if you change your mind you can select a different option assuming time permits it. Once you've decided on your choice, play your hand to continue the game. If you fail to make your choice in time, the computer will choose for you. Don't worry, we'll keep track of your score so you don't have to.</p>
-            <button onclick ="checker()" id="play">START GAME</button>
-            <section id="player_display">
-                <h2>Player's Choice:</h2>
-                <img src="placeholder.png" id="player_image">
+            <p>You : <span id="pScore"></span> | Computer : <span id="cScore"></span></p>
+            <p>Timer: <span id="timer">10</span></p>
+            <section id="options">
+                <input type="radio" id="rock" value="ROCK" name="choice" check="false">
+                <label for="rock">ROCK</label>
+                <input type="radio" id="paper" value="PAPER" name="choice" check="false">
+                <label for="paper">PAPER</label>
+                <input type="radio" id="scissors" value="SCISSORS" name="choice" check="false">
+                <label for="scissors">SCISSORS</label>
+                <button onclick ="checker()" id="play">START GAME</button>
             </section>
-            <section id="computer_display">
-                <h2>Computer's Choice:</h2>
+            <section id="contain_results">
+                <p id="result">INSTRUCTIONS: When you start the game, you will have 10 seconds to make a choice by clicking one of the three options above. Once you make your choice, click "Play Hand" to playout the round.</p>
+            </section>
+            <section id="display">
+                <figcaption>
+                    <legend>Player's Choice:</legend>
+                <img src="placeholder.png" id="player_image">
+                </figcaption>
+                <figcaption>
+                    <legend>Computer's Choice:</legend>
                 <img src="placeholder.png" id="computer_image">
+                </figcaption>
             </section>
         </main>
     </body>

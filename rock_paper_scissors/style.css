@@ -15,15 +15,12 @@ header {
     width: 97.5%;
     border: 2px black solid;
     border-radius: 5px;
-    margin: 1vh auto;
+    margin: 5px auto 0px auto;
 }
 
 main {
-    padding: 10px;
     width: 97.5%;
-    height: 90vh;
-    border: 2px black solid;
-    border-radius: 5px;
+    height: auto;
     margin: 0px auto;
 }
 
@@ -32,12 +29,12 @@ input {
 }
 
 label{
-    display: inline-block;
+    display: none;
     padding: 5px;
     border: 2px black solid;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 18px;
 }
 
 label:hover {
@@ -49,44 +46,39 @@ input:checked + label {
     color: white;
 }
 
-section {
-    display: inline-block;
-    margin: 1vh auto;
-    width: 49%;
-    height: 75%;
-}
-
-h2 {
-    padding: 2px;
-    margin-bottom: 10px;
-    display: inline-block;
-    border-bottom: 2px black solid;
-}
-
 img {
     margin: 0px auto;
-    width: 80%;
-    height: 80%;
+    width: 600px;
+    height: 425px;
     border: 2px black solid;
     border-radius: 5px;
 }
 
-p {
-    padding: 5px;
+p, legend {
+    margin: 5px;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 20px;
 }
 
-#choice {
-    padding: 2px;
+#options {
+    height: 45px;
+}
+
+#contain_results {
+    height: 50px;
+    border-radius: 5px;
+}
+
+#display {
+    display: grid;
+    grid-template-columns: auto auto;
 }
 
 #play {
-    display: block;
     padding: 5px;
-    margin: 10px auto 0px auto;
+    margin: 5px auto 0px auto;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 18px;
     border: 2px black solid;
     border-radius: 5px;
 }
