@@ -3,157 +3,31 @@
     <head>
         <title>SD 230: Rock, Paper, Scissors</title>
         <meta charset="UTF-8">
-        <style>
-            
-            * {
-                margin: 0px;
-                padding: 0px;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family: monospace;
-                text-align: center;
-            }
-
-            header {
-                text-align: center;
-                width: 97.5%;
-                border: 2px black solid;
-                margin: 1vh auto;
-            }
-
-            main {
-                width: 97.5%;
-                height: 90vh;
-                border: 2px black solid;
-                margin: 0px auto;
-            }
-
-            section {
-                display: inline-block;
-                margin: 1vh auto;
-                width: 49%;
-                height: 80%;
-                border: 2px black solid;
-            }
-
-            h2 {
-                margin: 1vh;
-            }
-
-            img {
-                margin: 0px auto;
-                width: 80%;
-                height: 80%;
-                border: 2px black solid;
-            }
-
-            #choice {
-                padding: 2px;
-            }
-
-            #result {
-                font-weight: bold;
-                font-size: 24px;
-            }
-
-            #play {
-                padding: 2px;
-                margin-top: 5px;
-                font-weight: bold;
-                font-size: 24px;
-                border: 2px black solid;
-            }
-
-            #play:active {
-                padding: 5px;
-            }
-
-            #play:hover {
-                box-shadow: 2px 2px black;
-            }
-
-        </style>
+        <link rel="stylesheet" href="style.css">
+         <script src="script.js" defer></script> 
     </head>
     <body>
-        <header><h1>SD 230: Rock, Paper, Scissors</h1></header>
+        <header><h1>ROCK, PAPER, SCISSORS</h1></header>
         <main>
+            <p>Score: You - <span id="pScore"></span> The Computer - <span id="cScore"></span></p>
+            <p>Timer: <span id="timer"><span></p>
+            <input type="radio" id="rock" value="ROCK" name="choice" check="false">
+            <label for="rock">ROCK</label>
+            <input type="radio" id="paper" value="PAPER" name="choice" check="false">
+            <label for="paper">PAPER</label>
+            <input type="radio" id="scissors" value="SCISSORS" name="choice" check="false">
+            <label for="scissors">SCISSORS</label>
+            <span id ="timer"></span>
+            <p id="result">INSTRUCTIONS: When you start the game, you will have 10 seconds to make a choice by clicking one of the three options above. Once you make your choice, if you change your mind you can select a different option assuming time permits it. Once you've decided on your choice, play your hand to continue the game. If you fail to make your choice in time, the computer will choose for you. Don't worry, we'll keep track of your score so you don't have to.</p>
+            <button onclick ="checker()" id="play">START GAME</button>
             <section id="player_display">
-                <h2>Player Chooses:</h2>
+                <h2>Player's Choice:</h2>
                 <img src="placeholder.png" id="player_image">
             </section>
             <section id="computer_display">
-                <h2>Computer Chooses:</h2>
+                <h2>Computer's Choice:</h2>
                 <img src="placeholder.png" id="computer_image">
             </section>
-            <p id="result"></p>
-            <button onclick="outcome()" id="play">PLAY GAME!</button>
         </main>
-        <script>
-            const options = ["ROCK", "PAPER", "SCISSORS"];
-
-            function outcome() {
-                let computerChoice = options[random_number(3)]; //randomly generated result for computer
-                let playerChoice = prompt("Please Type Rock, Paper or Scissors:"); //player input value
-                let playerChoiceFixed = playerChoice.toUpperCase(); // eliminates issues with capitolization
-                let result;
-
-                // while user inputs a non-option, prompt will continue to ask user for rock, paper or scissors
-                while(playerChoiceFixed != "ROCK" && playerChoiceFixed != "SCISSORS" && playerChoiceFixed != "PAPER") {
-                    playerChoice = prompt("\"" + playerChoice + "\" is not a valid option. Please choose Rock, Paper, or Scissors.");
-                    playerChoiceFixed = playerChoice.toUpperCase();
-                }
-
-                // HANDLING IMAGES
-
-                picSwitch(playerChoiceFixed,"player_image");
-                
-                picSwitch(computerChoice,"computer_image");
-
-                // HANDLING RESULTS
-
-                //draw
-                if(playerChoiceFixed == computerChoice) {
-                    result = "You and the computer both chose " + playerChoiceFixed + ". The game ends in a draw.";
-                    document.getElementById("result").style.color = "black";
-                }
-                // player won
-                else if(playerChoiceFixed === "PAPER" && computerChoice === "ROCK" || playerChoiceFixed === "ROCK" && computerChoice === "SCISSORS" || playerChoiceFixed === "SCISSORS" && computerChoice === "PAPER") {
-                    result = playerChoiceFixed + " beats " + computerChoice + ". You win!";
-                    document.getElementById("result").style.color = "green";
-                }
-                // player lost
-                else {
-                    result = computerChoice + " beats " + playerChoiceFixed + ". You lose...";
-                    document.getElementById("result").style.color = "red";
-                }
-
-                document.getElementById("result").innerHTML = result;
-                document.getElementById("play").innerHTML = "PLAY AGAIN!";
-                
-            }
-        
-
-            // Random Number Generator
-            function random_number(number) {
-                return Math.floor(Math.random() * number);
-            }
-
-            function picSwitch(input, id) {
-                switch(input) {
-                    case "ROCK":
-                    document.getElementById(id).src = "therock.png";
-                    break;
-                    case "PAPER":
-                    document.getElementById(id).src = "paper.jpg";
-                    break;
-                    case "SCISSORS":
-                    document.getElementById(id).src = "scissors.jpg";
-                    break; 
-                }   
-            }
-
-        </script>
     </body>
 </html>
