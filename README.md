@@ -7,5 +7,7 @@
 
 # Calculator
 - a project to learn how to handle/add/remove items in arrays
+![Capture](https://github.com/TJH2/SD230-Projects/assets/82971033/45d3edf5-9c4e-4144-855d-a789e1fe52ae)
+
 
 
