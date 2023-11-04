@@ -29,13 +29,18 @@ function hold(input) {
                 if(!isNaN(calc.length -1)) {
                     for(let i = calc.length -1; i >= 0; i--) {
                         if(isNaN(calc[i]) && calc[i] != ".") {
+                            if(i == calc.length -1) {
+                                return;
+                            }
                             calc[i+1] = calc[i+1] * -1;
                             viz(visuals);
                             break;
                         }
                         else if(calc[i] == ".") {
+                            if(isNaN(calc[i-1])) {
                             calc.splice(i, 0, "-0");
                             viz(visuals);
+                            }
                             break;
                         }
                         else if(i == 0) {
@@ -179,5 +184,3 @@ function modeHandler() {
         document.getElementById("modeHandler").innerText = "Dark Theme";
     }
 }
-
-console.log(0 * -1);
