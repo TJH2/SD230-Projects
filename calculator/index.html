@@ -3,202 +3,42 @@
     <head>
         <title>SD 230: Calculator</title>
         <meta charset="utf-8">
-        <style>
-            * {
-                margin: 0px;
-                padding: 0px;
-                box-sizing: border-box;
-            }
-            body {
-                font-family: monospace;
-                text-align: center;
-            }
-            h1 {
-                margin: 10px auto;
-                width: 35vw;
-                border: 2px black solid;
-            }
-            main {
-                background-color: seagreen;
-                margin: 10px auto;
-                padding: 20px;
-                width: 35vw;
-                height: 600px;
-                border: 2px black solid;
-            }
-            h2 {
-                height: 35px;
-                border: 2px black solid;
-                text-align: right;
-                margin-bottom: 20px;
-                padding: 5px;
-                padding-right: 20px;
-                background-color: white;
-                overflow: hidden;
-            }
-            button {
-                padding: 2px;
-                width: 60px;
-                font-weight: bolder;
-                border: 2px black solid;
-            }
-            #numbers {
-                float: left;
-                display: grid;
-                grid-template-columns: auto auto auto;
-                gap: 20px;
-                justify-content: center;
-                align-content: stretch;
-                width: 75%;
-                height: 500px;
-                padding: 20px;
-                background-color: orange;
-                border: 2px black solid;
-                opacity: .9;
-            }
-            #operators {
-                float: right;
-                display: grid;
-                justify-content: center;
-                align-content:space-between;
-                gap: 20px;
-                width: 20%;
-                height: 500px;
-                padding: 20px;
-                background-color: pink;
-                border: 2px black solid;
-                opacity: .9;
-            }
-        </style>
+        <link href="style.css" rel="stylesheet">
+        <script src="script.js" defer></script> 
     </head>
     <body>
-        <header>
+        <header id="header">
             <h1>SD 230: CALCULATOR</h1>
-            <p>I chose not to use a prompt() for this assingment so that I can make the program work more like a handheld calculator.</p>
-            <p>Please input your math problem into the calculator.</p> 
-            <p>Click <a href="#" onclick="help()"><strong>HELP</strong></a> for information on each button.</p>
+            <button id="modeHandler" onclick="modeHandler()">Dark Theme</button>
         </header>
         <main>
-            <h2 id="visual"></h2>
-            <div id="numbers">
-                <button onclick="hold(1)">1</button>
-                <button onclick="hold(2)">2</button>
-                <button onclick="hold(3)">3</button>
-                <button onclick="hold(4)">4</button>
-                <button onclick="hold(5)">5</button>
-                <button onclick="hold(6)">6</button>
-                <button onclick="hold(7)">7</button>
-                <button onclick="hold(8)">8</button>
-                <button onclick="hold(9)">9</button>
-                <button onclick="hold(0)">0</button>
-            </div>
-
-            <div id="operators">
-                <button onclick="hold('+')">+</button>
-                <button onclick="hold('-')">-</button>
-                <button onclick="hold('/')">/</button>
-                <button onclick="hold('*')">*</button>
-                <button onclick="hold('**')">^</button>
-                <button onclick="hold('\(')">&#40;</button>
-                <button onclick="hold('\)')">&#41;</button>
-                <button onclick="hold('.')">.</button>
-                <button onclick ="compute()">=</button>
-                <button onclick="back()">DEL</button>
-                <button onclick="wipe()">CLEAR</button>
-            </div>
-
+            <section id="calculator">
+                <h2 id="visual"></h2>
+                <div id="options">
+                    <button onclick="fresh()">CLR</button>
+                    <button onclick="hold('+/-')">+/-</button>
+                    <button onclick="hold('%')">%</button>
+                    <button onclick="hold('/')">/</button>
+                    <button onclick="hold(1)">1</button>
+                    <button onclick="hold(2)">2</button>
+                    <button onclick="hold(3)">3</button>
+                    <button onclick="hold('*')">*</button>
+                    <button onclick="hold(4)">4</button>
+                    <button onclick="hold(5)">5</button>
+                    <button onclick="hold(6)">6</button>
+                    <button onclick="hold('-')">-</button>
+                    <button onclick="hold(7)">7</button>
+                    <button onclick="hold(8)">8</button>
+                    <button onclick="hold(9)">9</button>
+                    <button onclick="hold('+')">+</button>
+                    <button onclick="hold(0)">0</button>
+                    <button onclick="hold('.')">.</button>
+                    <button onclick="back()">DEL</button>
+                    <button onclick ="compute()">=</button>
+                </div>
+            </section>
+        <section id="runningTotal">
+        </section>
         </main>
-        <script>
-            let calc = [];
-            let answer = 0;
-
-            // function for brief explenation of operators
-            function help() {
-                alert("0-9 -> Numeric Values\n" +
-                      "- -> Subtraction\n" + 
-                      "/ -> Division\n" +
-                      "* -> Multiplication\n" +
-                      "^ -> Exponents\n" +
-                      "( -> Left Parentheses\n" +
-                      ") -> Right Parentheses\n" +
-                      ". -> Decimal\n" +
-                      "= -> Computes Problem\n" +
-                      "DEL -> Removes Last Input\n" +
-                      "CLEAR -> Clears Calculator");
-            }
-
-            function hold(input) {
-                let visuals = "";
-
-                // because eval() can't handle n(n), instert a * before ()
-                if(isNaN(calc[calc.length -1]) == false && input == "(") {
-                    hold("*");
-                }
-                // to ensure that each number only has one decimal
-                // if the last NaN value is a . then don't add it, else add it in
-                else if(input == ".") {
-                    for(let i = calc.length -1; i >= 0; i--) {
-                        if(isNaN(calc[i])) {
-                            if(calc[i] == ".") { return; }
-                            else { break; }
-                        }
-                    }
-                }
-
-                // will keep computed value unless user tries to input a # after the value
-                if(calc.length == 1 && answer != 0 && (isNaN(input) == false || input == ".")) {
-                    answer = 0;
-                    calc = [];
-                }
-
-                calc.push(input);
-                for(let i = 0; i < calc.length; i++) {
-                    // to keep consistant visuals
-                    if(calc[i] != "**") {
-                    visuals += calc[i];
-                    }
-                    else {
-                        visuals += "^";
-                    }
-                }
-                document.getElementById("visual").innerHTML = visuals;
-            }
-
-            // function to compute problem
-            function compute() {
-                // to avoid unclosed parentheses error
-                try {
-                    answer = eval(calc.join('')); // a method to evaulate the array and add up the value
-                    if(!Number.isInteger(answer)) { // to keep answer at 2 decimal places if needed
-                    answer = answer.toFixed(2);
-                    }
-                    calc = [answer];
-                    document.getElementById("visual").innerHTML = calc[0];
-                } catch(e) {
-                    alert("Please make sure the parentheses are closed.");
-                  }
-            }
-
-            // function to handle the delete feature
-            function back() {
-                let visuals = "";
-                if(calc) {
-                    calc.pop();
-                
-                    for(let i = 0; i < calc.length; i++) {
-                        visuals += calc[i];
-                    }
-                    document.getElementById("visual").innerHTML = visuals;
-                }
-
-            }
-
-            // function to clear the calculator
-            function wipe() {
-                answer = 0;
-                calc = [];
-                document.getElementById("visual").innerHTML = "";
-            }
-        </script>
     </body>
 </html>
