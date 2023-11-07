@@ -22,36 +22,32 @@ function hold(input) {
         }
 
         else if(input == '+/-') {
-            if(calc.length == 0) {
-                input = "-";
-            }
-            else {
-                if(!isNaN(calc.length -1)) {
-                    for(let i = calc.length -1; i >= 0; i--) {
-                        if(isNaN(calc[i]) && calc[i] != ".") {
-                            if(i == calc.length -1) {
+            
+            for(let i = calc.length -1; i >= 0; i--) {
+                if(isNaN(calc[i]) && calc[i] != ".") {
+                    if(i == calc.length -1) {
                                 return;
-                            }
-                            calc[i+1] = calc[i+1] * -1;
-                            viz(visuals);
-                            break;
-                        }
-                        else if(calc[i] == ".") {
-                            if(isNaN(calc[i-1])) {
-                            calc.splice(i, 0, "-0");
-                            viz(visuals);
-                            }
-                            break;
-                        }
-                        else if(i == 0) {
-                            calc[i] = calc[i] * -1;
-                            viz(visuals);
-                            break;
-                        }
+                    }
+                    calc[i+1] = calc[i+1] * -1;
+                    break;
+                }
+                else if(calc[i] == ".") {
+                    if(isNaN(calc[i-1])) {
+                    calc.splice(i, 0, "-0");
+                    break;
+                    }
+                    else if(calc[i-1] == "-0") {
+                        calc.splice(i-1, 1);
+                        break;
                     }
                 }
-                return;
+                else if(i == 0) {
+                    calc[i] = calc[i] * -1;
+                    break;
+                }
             }
+            viz(visuals);
+            return;    
         }
 
         else if(input == "%") {
@@ -77,7 +73,7 @@ function hold(input) {
         }
         
     }
-    else if(input == 0 && (calc.length == 0 || isNaN(calc[calc.length-1]))) { // to handle the issue with starting off with a 0
+    else if(input == 0 && (calc.length == 0 || (isNaN(calc[calc.length-1]) && calc[calc.length-1] != "."))) { // to handle the issue with starting off with a 0
        return;
     }
 
