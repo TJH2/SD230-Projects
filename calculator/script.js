@@ -54,11 +54,17 @@ function hold(input) {
             if(calc.length != 0) {
                 for(let i = calc.length -1; i >= 0; i--) {
                     if(isNaN(calc[i]) || i == 0) {
-                        if(calc[i] != ".") {
+                        if(calc[i] == ".") {
+                            calc.splice(i+1, 0, "0");
+                            calc.splice(i+1, 0, "0");
+                        } 
+                        else {
                             calc.splice(i, 0, ".");
-                        } else {
-                            calc.splice(i+1, 0, "0");
-                            calc.splice(i+1, 0, "0");
+                            // if the number is negative it was cause .-22, so this is to change that to -0.22
+                            if(Math.sign(calc[i+1]) == -1) {
+                                calc[i +1] = calc[i +1] * -1;
+                                calc.splice(i, 0, "-0");
+                            }
                         }
                         viz(visuals);
                         break;
