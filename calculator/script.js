@@ -11,6 +11,7 @@ function hold(input) {
     //}
     // to ensure that each number only has one decimal
     // if the last NaN value is a . then don't add it, else add it in
+    
     if(isNaN(input)) {
         if(input == ".") {
             for(let i = calc.length -1; i >= 0; i--) {
@@ -51,6 +52,7 @@ function hold(input) {
         }
 
         else if(input == "%") {
+            let neg = false
             if(calc.length != 0) {
                 for(let i = calc.length -1; i >= 0; i--) {
                     if(isNaN(calc[i]) || i == 0) {
@@ -59,26 +61,48 @@ function hold(input) {
                             calc.splice(i+1, 0, "0");
                         } 
                         else {
-                            calc.splice(i, 0, ".");
-                            // if the number is negative it was cause .-22, so this is to change that to -0.22
-                            if(Math.sign(calc[i+1]) == -1) {
-                                calc[i +1] = calc[i +1] * -1;
-                                calc.splice(i, 0, "-0");
+                            if(isNaN(calc[i])) {
+                                landing(1, i);
+                            }
+                            else {
+                                landing(0, i);
                             }
                         }
                         viz(visuals);
                         break;
                     }
+                    // function to help handle % depending on if i is an operator or the start of the array. created a function to reduce code
+                    function landing(shift) {
+
+                        let neg = false;
+                    
+                        if(Math.sign(calc[i + shift]) == -1) {
+                            calc[i + shift] = calc[i + shift] * -1;
+                            neg = true;
+                        }
+                    
+                        if(calc.length - i > shift + 1) {
+                            calc.splice(i + shift, 0, ".");
+                        } else {
+                            calc.splice(i + shift, 0, "0");
+                            calc.splice(i + shift, 0, ".");
+                        }
+                        
+                        if(neg) {
+                            calc.splice(i + shift, 0, "-0");
+                        }
+                    }
             }
             }
-            return;
+            return;  
         }
 
-        else if(calc.length == 0) {
+        else if(calc.length == 0 || isNaN(calc[calc.length -1])) {
             return;
         }
         
     }
+
     else if(input == 0 && (calc.length == 0 || (isNaN(calc[calc.length-1]) && calc[calc.length-1] != "."))) { // to handle the issue with starting off with a 0
        return;
     }
