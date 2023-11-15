@@ -1,0 +1,142 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body {
+    font-family: monospace;
+}
+header {
+    border: 2px black solid;
+    border-radius: 5px;
+    margin: 10px auto;
+    padding: 10px;
+    width: 850px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-items: center;
+    align-items: center;
+}
+h1 {
+    text-align: left;
+}
+
+ul li {
+    margin: 5px 5px 0px 5px;
+    display: inline-block;
+}
+
+a {
+    font-size: 14px;
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+#register {
+    padding: 5px;
+    border: 2px black solid;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 14px;
+}
+
+main {
+    border: 2px black solid;
+    border-radius: 5px;
+    margin: 10px auto 0px auto;
+    padding: 10px;
+    width: 850px;
+    height: auto;
+}
+
+#interface {
+    border: 2px black solid;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#innerLinks {
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    margin-bottom: 20px;
+    justify-items: center;
+}
+
+#inputs {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+}
+
+label {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+}
+
+#amount {
+    padding-left: 5px;
+}
+
+select {
+    padding: 2px;
+}
+
+#switch {
+    font-weight: bolder;
+    font-size: 32px;
+    position: relative;
+    top: 5px;
+}
+
+#convertButton {
+    margin-top: 20px;
+    padding: 5px;
+    border: 2px black solid;
+    border-radius: 5px;
+    font-weight: bolder;
+    font-size: 14px;
+    position: relative;
+    left: 25px;
+}
+#conversion {
+    padding-top: 10px;
+    height: 75px;
+    position: relative;
+    left: 25px;
+}
+
+
+#container {
+    height: auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    display: none;
+    justify-items: center;
+    align-items: center;
+}
+
+
+#fList, #rList {
+    margin: 20px auto;
+    margin-top: 10px;
+    padding: 20px;
+    border: 2px black solid;
+    border-radius: 5px;
+    width: 350px;
+    height: auto;
+    text-align: center;
+}
+
+
+#results {
+    margin-top: 10px;
+}

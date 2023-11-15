@@ -3,205 +3,111 @@
     <head>
         <title>SD 230: Currency Converter</title>
         <meta charset="utf-8">
-        <style>
-            * {
-                margin: 0px;
-                padding: 0px;
-                box-sizing: border-box;
-            }
-            body {
-                text-align: center;
-                font-family: monospace;
-            }
-            header {
-                border: 2px black solid;
-                margin: 10px;
-                padding: 5px;
-            }
-            main {
-                border: 2px black solid;
-                margin: 10px;
-                padding: 20px;
-            }
-            h2{
-                margin-bottom: 20px;
-            }
-            select {
-                padding: 2px;
-            }
-            button {
-                margin-top: 20px;
-                padding: 5px;
-                border: 2px black solid;
-                font-weight: bolder;
-            }
-            #conversion {
-                color: transparent;
-                margin: 20px;
-            }
-            #results {
-                margin-top: 10px;
-            }
-        </style>
+        <link href="style.css" rel="stylesheet">
+        <script src="script.js" defer></script> 
     </head>
     <body>
         <header>
-            <h1>SD 230: Currency Converter</h1>
+            <h1>Currency Converter</h1>
+            <ul>
+                <li><a href="#">Send Money</a></li>
+                <li><a href="#">Converter</a></li>
+                <li><a href="#">Currency API</a></li>
+                <li><a href="#">Tools</a></li>
+            </ul>
+            <section>
+                <a href="#">Sign In</a>
+                <button id="register">Register</button>
+            </section>
         </header>
         <main>
-            <h2>Currency Conversion Tool:</h2>
-            <label for="amount"><strong>Amount To Convert:</strong></label>
-            <input type="text" id="amount">
-            <label for="from">Starting Currency:</label>
-            <select name="from" id="from">
-                <option value="AUD">AUD</option>
-                <option value="CAD">CAD</option>
-                <option value="CLP">CLP</option>
-                <option value="CNY">CNY</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="INR">INR</option>
-                <option value="JPY">JPY</option>
-                <option value="RUB">RUB</option>
-                <option value="USD">USD</option>
-                <option value="ZAR">ZAR</option>
-            </select>
-            <label for="to">Convert To:</label>
-            <select name="to" id="to">
-                <option value="AUD">AUD</option>
-                <option value="CAD">CAD</option>
-                <option value="CLP">CLP</option>
-                <option value="CNY">CNY</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="INR">INR</option>
-                <option value="JPY">JPY</option>
-                <option value="RUB">RUB</option>
-                <option value="USD">USD</option>
-                <option value="ZAR">ZAR</option>
-            </select>
-            <br>
-            <button onclick="convert(document.getElementById('amount').value, document.getElementById('from').value, document.getElementById('to').value)">Convert</button>
-            <p id="conversion">placeholder</p>
+            <div id="interface">
+                <ul id="innerLinks">
+                    <li><a href="#">Convert</a></li>
+                    <li><a href="#">Send</a></li>
+                    <li><a href="#">Charts</a></li>
+                    <li><a href="#">Alerts</a></li>
+                </ul>
+                <div id="inputs">
+                    <section>
+                        <label for="amount"><strong>Amount:</strong></label>
+                        <input type="text" id="amount">
+                    </section>
+                    <section>
+                        <label for="from">From:</label>
+                        <select name="from" id="from">
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="CLP">CLP - Chilean Peso</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound Sterling</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="RUB">RUB - Russian Ruble</option>
+                            <option value="USD" selected>USD - United States Dollar</option>
+                            <option value="ZAR">ZAR - South African Rand</option>
+                        </select>
+                    </section>
+                    <p><a href="#" onclick="flip_vals()" id="switch">&#8646;</a></p>
+                    <section>
+                        <label for="to">To:</label>
+                        <select name="to" id="to">
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="CLP">CLP - Chilean Peso</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound Sterling</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="RUB">RUB - Russian Ruble</option>
+                            <option value="USD" selected>USD - United States Dollar</option>
+                            <option value="ZAR">ZAR - South African Rand</option>
+                        </select>
+                    </section>
+                </div>
+                <button id="convertButton" onclick="convert_currency(document.getElementById('amount').value, document.getElementById('from').value, document.getElementById('to').value)">Convert</button>
+                <div id="conversion"></div>
+            </div>
+            <div id="container">
+                <div id="fList">
+                    <h3>Convert USD to Euro</h3>
+                    <section style="display:grid; grid-template-columns: auto auto;">
+                        <p>USD</p>
+                        <p>Euro</p>
+                    </section>
+                    <hr>
+                </div>
+                <div id="rList">
+                    <h3>Convert USD to Euro</h3>
+                    <section style="display:grid; grid-template-columns: auto auto;">
+                        <p>USD</p>
+                        <p>Euro</p>
+                    </section>
+                    <hr>
+                </div>
+            <div>
+
+            <!--
             <h2>Currency Lookup Tool:</h2>
             <p>If you aren't sure which currency code you're looking for, click the button below!</p>
             <p><strong>Hint:</strong> To get a list of all available currencies, leave prompt blank.</p>
             <button onclick="search(prompt('Please Provide A Currency Code or Partial Name To Search Available Currencies:'))">CURRENCY LOOKUP TOOL</button>
             <div id="results"></div>
-        </main>
-        <script>
-
-            // currencies objecy
-            let currencies = {
-                "AUD": "Australian Dollar",
-                "CAD": "Canadian Dollar",
-                "CLP": "Chilean Peso",
-                "CNY" : "Chinese Yuan",
-                "EUR" : "Euro",
-                "GBP" : "British Pound Sterling",
-                "INR" :"Indian Rupee",
-                "JPY" : "Japanese Yen",
-                "RUB" : "Russian Ruble",
-                "USD" : "United States Dollar",
-                "ZAR": "South African Rand"
-                }
-
-                let conversions = {
-                    "AUD": 1.531863,
-                    "CAD": 1.36029,
-                    "CLP": 950.662057,
-                    "CNY" : 7.128404,
-                    "EUR" : 1.03203,
-                    "GBP" : 0.920938,
-                    "INR" : 81.255504,
-                    "JPY" : 143.376504,
-                    "RUB" : 57.875038,
-                    "USD" : 1,
-                    "ZAR": 17.92624
-                }
-            
-            // function to return full name of currency code
-            function fullName(code) {
-                let fullName = "";
-
-                Object.keys(currencies).forEach(key => {
-                    if(code === key) {
-                        fullName = currencies[key];
-                    }
-                })
-
-                return fullName;
-            }
-
-            // function to return conversion value
-            function conversion(code) {
-                let convertBy = 0;
-                Object.keys(conversions).forEach(key => {
-                    if(code === key) {
-                        convertBy = conversions[key];
-                    }
-                })
-
-                return convertBy;
-            }
-
-            // function to handle searching currency codes
-            function search(term){
-
-                document.getElementById("results").innerHTML = "";
-                
-                // veriable for if term appears
-                let termFound = false;
-
-                // for each loop to check for keys/partial values
-                Object.keys(currencies).forEach(key => {
-                    if(key === term.toUpperCase() || currencies[key].toLowerCase().includes(term.toLowerCase())) {
-                        document.getElementById("results").innerHTML += "<p>" + key + " - " + currencies[key] +"</p>";
-                        termFound = true;
-                    }
+            -->
+            <script>
+                // This is added because Firefox remembers previous inputs after refresh, so I'm resetting the page manually with JS
+                document.getElementById("from").value = "USD";
+                document.getElementById("to").value = "USD";
+                document.getElementById("amount").value = "0";
+                let currency = new Intl.NumberFormat('en-US', {
+                    currencyDisplay: "symbol",
+                    style: 'currency',
+                    currency: "USD",
                 });
-
-                if(termFound == false) {
-                    document.getElementById("results").innerHTML += "<p>I'm sorry, \"" + term + "\" did not match any known currencies. Please try again.</p>";
-                }
-                return;
-            }
-
-            // function to convert between currencies
-            function convert(amount, starting_cc, ending_cc) {
-                
-                // Error handling for amount input
-                if(isNaN(amount) || amount == "") {
-                    alert("Please Provide a Numeric Value to Convert.");
-                    document.getElementById("amount").value = "";
-                }
-
-                // if user selects the same currency for from and to
-                if(starting_cc === ending_cc) {
-                    alert("You need to select two different currencies to use this converter.");
-                    return;
-                }
-
-                else {
-                    let newAmount = 0.00; // variable to convert to USD and then convert to new currency
-
-                    amount = amount * 1.00; // adds decimal place for whole #s
-                
-                    // convert to USD
-                    newAmount = amount / conversion(starting_cc);
-                    // convert from USD to new currency
-                    newAmount = newAmount * conversion(ending_cc);
-
-                    // to display full name
-                    starting_cc = starting_cc + " (" + fullName(starting_cc) + ")";
-                    ending_cc = ending_cc + " (" + fullName(ending_cc) + ")";
-
-                    // toFixed(2) rounds to 2 decimal places
-                    document.getElementById("conversion").innerHTML = amount.toFixed(2) + " " + starting_cc + " converts to " + newAmount.toFixed(2) + " " + ending_cc;
-                    document.getElementById("conversion").style.color = "black";
-                }
-                return;
-            }
-        </script>
+                document.getElementById("amount").value = currency.format(document.getElementById("amount").value);
+            </script>
+        </main>
     </body>
 </html>
