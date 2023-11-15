@@ -4,6 +4,8 @@
 
 # Currency Converter
 - a project to learn the basics of handling/working with JS objects
+![Capture](https://github.com/TJH2/SD230-Projects/assets/82971033/d4c2555e-e11f-4427-9184-bf3c68798618)
+
 
 # Calculator
 - a project to learn how to handle/add/remove items in arrays
