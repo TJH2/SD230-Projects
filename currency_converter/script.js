@@ -1,4 +1,4 @@
-// currency names object
+// currency names/display object
 let currency_names = {
     "AUD": "Australian Dollar",
     "CAD": "Canadian Dollar",
@@ -53,7 +53,7 @@ function convert_currency(amount, fromCC, toCC) {
         let toFullName = currency_names[toCC];
 
         // DISPLAYING INFORMATION ON THE PAGE TO THE USER
-        
+
         document.getElementById("conversion").innerHTML = "<p>" + amount + " " + fromFullName + " =</p>" + "<p style='font-size: 20px'>" + newAmount + " " + toFullName + "</p>" + "<br><p style='font-size: 12px'>" + amount + " " + toFullName + " = " + reverseAmount + " " + fromFullName + "</p>";
 
         document.getElementById("fList").innerHTML = 
@@ -86,6 +86,7 @@ function convert_currency(amount, fromCC, toCC) {
             "</section>";
         }
 
+        // display starts off none for currency calculations, but will be made visible after first conversion
         if(document.getElementById("container").style.display = "none") {
             document.getElementById("container").style.display = "grid";
         }
@@ -117,9 +118,9 @@ function currency_formatter() {
     });
 
     value = value.replace(/[^0-9\.]/g,"");
-
+    
     //removes additional decimal if accidentally placed
-    if(isNaN(this.value)) {
+    if(isNaN(value)) {
         value = Array.from(value);
         value.pop();
         value = value.toString();
@@ -138,6 +139,11 @@ function converter(amount, start, finish) {
         newAmount = amount / conversion_rates[start];
         // convert from USD to new currency
         newAmount = newAmount * conversion_rates[finish];
+
+        // limits the amount of decimal places to 5 for easy viewing
+        if(newAmount.toString().length - Math.round(newAmount).toString().length > 5) {
+            newAmount = newAmount.toFixed(5);
+        }
 
         return newAmount;
 }
