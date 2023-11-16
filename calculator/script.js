@@ -165,8 +165,9 @@ function viz(visuals) {
     // to check for errors
     try {
             answer = eval(calc.join('')); // a method to evaulate the array and add up the value
-            if(!Number.isInteger(answer)) { // to keep answer at 2 decimal places if needed
-                answer = answer.toFixed(2);
+            // limits the amount of decimal places to 5 for easy viewing
+            if(answer.toString().length - Math.round(answer).toString().length > 5) {
+                answer = answer.toFixed(5);
             }
             for(let i = 0; i < calc.length; i++) {
                 // all operators should have a space between them and the numbers
