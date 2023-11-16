@@ -29,44 +29,46 @@ let currency_names = {
     }
 
 // function to convert between currencies
-function convert_currency(amount, starting_cc, ending_cc) {
+function convert_currency(amount, fromCC, toCC) {
 
-    if(amount == "" || starting_cc == "none" || ending_cc == "none") {
+    // to make sure a user has input an amount
+    if(amount == "") {
         return;
     }
-
+    // regex to remove currency symbol from amount value
     amount = amount.replace(/[^0-9\.]/g,"");
 
-    // if user selects the same currency for from and to
-    if(starting_cc === ending_cc) {
+    // sends alert if user tries to convert a currency to itself, since that is pointless
+    if(fromCC === toCC) {
         alert("You need to select two different currencies to use this converter.");
         return;
     }
 
     else {
-        let newAmount = converter(amount, starting_cc, ending_cc); // variable to convert to USD and then convert to new currency
-        let reverseAmount = converter(amount, ending_cc, starting_cc);
+        let newAmount = converter(amount, fromCC, toCC); // converted currency amount
+        let reverseAmount = converter(amount, toCC, fromCC); // amount converted with reverse currencies
 
-        // to display full name
-        let fullName1 = currency_names[starting_cc];
-        let fullName2 = currency_names[ending_cc];
+        // to display full name of currencies
+        let fromFullName = currency_names[fromCC];
+        let toFullName = currency_names[toCC];
 
-        // toFixed(2) rounds to 2 decimal places
-        document.getElementById("conversion").innerHTML = "<p>" + amount + " " + fullName1 + " =</p>" + "<p style='font-size: 20px'>" + newAmount + " " + fullName2 + "</p>" + "<br><p style='font-size: 12px'>" + amount + " " + fullName2 + " = " + reverseAmount + " " + fullName1 + "</p>";
+        // DISPLAYING INFORMATION ON THE PAGE TO THE USER
+        
+        document.getElementById("conversion").innerHTML = "<p>" + amount + " " + fromFullName + " =</p>" + "<p style='font-size: 20px'>" + newAmount + " " + toFullName + "</p>" + "<br><p style='font-size: 12px'>" + amount + " " + toFullName + " = " + reverseAmount + " " + fromFullName + "</p>";
 
         document.getElementById("fList").innerHTML = 
-        "<h3>Convert " + fullName1 + " to " + fullName2 + "</h3>" +
+        "<h3>Convert " + fromFullName + " to " + toFullName + "</h3>" +
         "<section style='display:grid; grid-template-columns: auto auto;'>" +
-        "<p>" + starting_cc + "</p>" +
-        "<p>" + ending_cc + "</p>" +
+        "<p>" + fromCC + "</p>" +
+        "<p>" + toCC + "</p>" +
         "</section>" +
         "<hr>";
 
         document.getElementById("rList").innerHTML = 
-        "<h3>Convert " + fullName2 + " to " + fullName1 + "</h3>" +
+        "<h3>Convert " + toFullName + " to " + fromFullName + "</h3>" +
         "<section style='display:grid; grid-template-columns: auto auto;'>" +
-        "<p>" + ending_cc + "</p>" +
-        "<p>" + starting_cc + "</p>" +
+        "<p>" + toCC + "</p>" +
+        "<p>" + fromCC + "</p>" +
         "</section>" +
         "<hr>";
 
@@ -74,13 +76,13 @@ function convert_currency(amount, starting_cc, ending_cc) {
 
         for(let i = 0; i < mults.length; i++) {
             document.getElementById("fList").innerHTML += "<section style='display:grid; grid-template-columns: auto auto; padding:5px;'>" +
-            "<p>" + mults[i] + " " + starting_cc + "</p>" +
-            "<p>" + converter(mults[i], starting_cc, ending_cc) + " " + ending_cc + "</p>" +
+            "<p>" + mults[i] + " " + fromCC + "</p>" +
+            "<p>" + converter(mults[i], fromCC, toCC) + " " + toCC + "</p>" +
             "</section>";
 
             document.getElementById("rList").innerHTML += "<section style='display:grid; grid-template-columns: auto auto; padding:5px;'>" +
-            "<p>" + mults[i] + " " + ending_cc + "</p>" +
-            "<p>" + converter(mults[i], ending_cc, starting_cc) + " " + starting_cc + "</p>" +
+            "<p>" + mults[i] + " " + toCC + "</p>" +
+            "<p>" + converter(mults[i], toCC, fromCC) + " " + fromCC + "</p>" +
             "</section>";
         }
 
@@ -104,6 +106,7 @@ function flip_vals() {
     return;
 }
 
+// function to handle currency formatting for display of amount
 function currency_formatter() {
     let value = document.getElementById("amount").value;
 
@@ -115,6 +118,7 @@ function currency_formatter() {
 
     value = value.replace(/[^0-9\.]/g,"");
 
+    //removes additional decimal if accidentally placed
     if(isNaN(this.value)) {
         value = Array.from(value);
         value.pop();
@@ -126,6 +130,7 @@ function currency_formatter() {
     return;
 }
 
+// function that converts initial currency amount to amount in new currency
 function converter(amount, start, finish) {
     let newAmount = 0.00; // variable to convert to USD and then convert to new currency
     
@@ -143,6 +148,7 @@ document.getElementById("amount").addEventListener("change", function() {
     return;
 });
 
+// event listen to display new currency when it is chosen by user
 document.getElementById("from").addEventListener("change", function() {
     currency_formatter();
     return;
@@ -159,10 +165,10 @@ xhttpr.send();
 xhttpr.onload = ()=> {
     if (xhttpr.status === 200) {
         const response = JSON.parse(xhttpr.response);
-        console.log("Successfully Connected To API!");
+        alert("Successfully Connected To API!");
         conversion_rates = response.conversion_rates; // replaces initial converstion rates with rates from the API
     } else {
-        console.log("Could Not Connect To API. Fallback Rates Will Be Used.");
+        alert("Could Not Connect To API. Fallback Rates Will Be Used.");
     }
   };
 
