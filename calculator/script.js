@@ -12,6 +12,7 @@ function hold(input) {
     // to ensure that each number only has one decimal
     // if the last NaN value is a . then don't add it, else add it in
     
+    // code to make sure that only one decimal per number is added
     if(isNaN(input)) {
         if(input == ".") {
             for(let i = calc.length -1; i >= 0; i--) {
@@ -22,9 +23,11 @@ function hold(input) {
             }
         }
 
+        // code to handle pos/neg feature
         else if(input == '+/-') {
             
             for(let i = calc.length -1; i >= 0; i--) {
+                // when the reversed array stops on a non-number, multiply the number before it by -1
                 if(isNaN(calc[i]) && calc[i] != ".") {
                     if(i == calc.length -1) {
                                 return;
@@ -32,6 +35,7 @@ function hold(input) {
                     calc[i+1] = calc[i+1] * -1;
                     break;
                 }
+                // if the next non-number in the reversed array is a ., ignore it
                 else if(calc[i] == ".") {
                     if(isNaN(calc[i-1])) {
                     calc.splice(i, 0, "-0");
@@ -42,6 +46,7 @@ function hold(input) {
                         break;
                     }
                 }
+                // if theres only one value in the array, and its a number, multiply it by -1
                 else if(i == 0) {
                     calc[i] = calc[i] * -1;
                     break;
@@ -51,19 +56,42 @@ function hold(input) {
             return;    
         }
 
+        // code for the percent feature
         else if(input == "%") {
-            let neg = false
+
+            if(isNaN(calc[calc.length-1])) {
+                return;
+            }
+
             if(calc.length != 0) {
+                // reverses through the array until it hits either a non-number or the start of the array
                 for(let i = calc.length -1; i >= 0; i--) {
                     if(isNaN(calc[i]) || i == 0) {
+                        // if it hits a decimal, adds 00 behind the decimal
                         if(calc[i] == ".") {
+
+                            if(i !=0 && !isNaN(calc[i-1])) {
+                                if(i - 1 !=0 && !isNaN(calc[i-2])) {
+                                    calc.splice(i,1);
+                                    calc.splice(i-2, 0, ".");
+                                }
+                                else {
+                                    calc.splice(i,1);
+                                    calc.splice(i-1, 0, "0");
+                                    calc.splice(i-1, 0, ".");
+                                }
+                            }
+                            else {
                             calc.splice(i+1, 0, "0");
                             calc.splice(i+1, 0, "0");
+                            }
                         } 
                         else {
+                            // if it hits a non-decimal non-number
                             if(isNaN(calc[i])) {
                                 landing(1, i);
                             }
+                            // if it hits the beginning of the array
                             else {
                                 landing(0, i);
                             }
@@ -75,20 +103,21 @@ function hold(input) {
                     function landing(shift) {
 
                         let neg = false;
-                    
+                        // checks to see if its dealing with a negative number
                         if(Math.sign(calc[i + shift]) == -1) {
                             calc[i + shift] = calc[i + shift] * -1;
                             neg = true;
                         }
                     
-                        if(calc.length - i > shift + 1) {
-                            calc.splice(i + shift, 0, ".");
-                        } else {
+                        if(calc.length - i > shift + 1) { // multiple digit # 55 -> .55
+                            let dif = (calc.length - i) - shift;
+                            calc.splice(i + (dif - 2) + shift, 0, ".");
+                        } else { // single digit # 5 -> .05
                             calc.splice(i + shift, 0, "0");
                             calc.splice(i + shift, 0, ".");
                         }
                         
-                        if(neg) {
+                        if(neg) { // if the number is negative insert a -0 -5 -> -0.05
                             calc.splice(i + shift, 0, "-0");
                         }
                     }
@@ -97,6 +126,7 @@ function hold(input) {
             return;  
         }
 
+        // dont add non-number to calculations if there are no numbers, or if there are no numbers between it and the last non-number
         else if(calc.length == 0 || isNaN(calc[calc.length -1])) {
             return;
         }
@@ -113,13 +143,15 @@ function hold(input) {
         calc = [];
     }
 
+    // add input to the array
     calc.push(input);
-
+    // display the array
     viz(visuals);
 
     return;
 }
 
+// function to display the contents of the array within the calculator to the user
 function viz(visuals) {
     for(let i = 0; i < calc.length; i++) { 
         visuals += calc[i];
@@ -129,26 +161,21 @@ function viz(visuals) {
 
 // function to compute problem
     function compute() {
-        let amass = "";
-    // to avoid unclosed parentheses error
+        let amass = ""; // for printing results to running total
+    // to check for errors
     try {
             answer = eval(calc.join('')); // a method to evaulate the array and add up the value
             if(!Number.isInteger(answer)) { // to keep answer at 2 decimal places if needed
                 answer = answer.toFixed(2);
             }
             for(let i = 0; i < calc.length; i++) {
-                if(isNaN(calc[i])) {
-                    if(calc[i] != "." && calc[i] != "-") {
-                        amass += " " + calc[i] + " ";
-                    } else if (calc[i] == "-") {
-                        if(i == 0 || isNaN(calc[i -1])) {
-                            amass += calc[i];
-                        } else {amass += " " + calc[i] + " "; }
-                    }
-                    else {amass += calc[i];}
-                } else {amass += calc[i];}
-                
+                // all operators should have a space between them and the numbers
+                if(isNaN(calc[i]) && calc[i] != ".") { 
+                    amass += " " + calc[i] + " ";   
+                } 
+                else {amass += calc[i];}  
             }
+            // for displaying the running totals in the box
             document.getElementById("runningTotal").innerHTML = document.getElementById("runningTotal").innerHTML + "<p>" + amass + " = " + answer +"</p>";
             
             
